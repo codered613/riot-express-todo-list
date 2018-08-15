@@ -22,8 +22,8 @@ function installPM2() {
 // transfers local project to the remote server
 function transferProjectToRemote(failed, successful) {
   return ssh.putDirectory(
-    '../deployment-handson2-todo',
-    '/home/ubuntu/deployment-handson2-todo-temp',
+    '../riot-express-todo-list',
+    '/home/ubuntu/riot-express-todo-list',
     {
       recursive: true,
       concurrency: 1,
@@ -49,7 +49,7 @@ function transferProjectToRemote(failed, successful) {
 // creates a temporary folder on the remote server
 function createRemoteTempFolder() {
   return ssh.execCommand(
-    'rm -rf deployment-handson2-todo-temp && mkdir deployment-handson2-todo-temp', {
+    'rm -rf riot-express-todo-list-temp && mkdir riot-express-todo-list-temp', {
       cwd: '/home/ubuntu'
   });
 }
@@ -65,7 +65,7 @@ function stopRemoteServices() {
 // updates the project source on the server
 function updateRemoteApp() {
   return ssh.execCommand(
-    'cp -r deployment-handson2-todo-temp/* deployment-handson2-todo/ && rm -rf deployment-handson2-todo-temp', {
+    'cp -r riot-express-todo-list-temp/* riot-express-todo-list/ && rm -rf riot-express-todo-list-temp', {
       cwd: '/home/ubuntu'
   });
 }
@@ -73,7 +73,7 @@ function updateRemoteApp() {
 // restart mongodb and node services on the remote server
 function restartRemoteServices() {
   return ssh.execCommand(
-    'cd deployment-handson2-todo && sudo service mongod start && pm2 start app.js', {
+    'cd riot-express-todo-list && sudo service mongod start && pm2 start app.js', {
       cwd: '/home/ubuntu'
   });
 }
@@ -85,7 +85,7 @@ function sshConnect() {
   ssh
     .connect({
       // TODO: ADD YOUR IP ADDRESS BELOW (e.g. '12.34.5.67')
-      host: '52.15.139.26',
+      host: '18.188.191.216',
       username: 'ubuntu',
       privateKey: 'dho-key.pem'
     })
@@ -95,7 +95,7 @@ function sshConnect() {
       return installPM2();
     })
     .then(function() {
-      console.log('Creating `deployment-handson2-todo-temp` folder.');
+      console.log('Creating `riot-express-todo-list-temp` folder.');
       return createRemoteTempFolder();
     })
     .then(function(result) {
